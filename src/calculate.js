@@ -326,6 +326,18 @@ for (const periodName of ["current", "previous"]) {
     deathMaximums[periodName].region;
 }
 
+const corrections = await readCorrections();
+
+applyCorrection(
+  stats.current,
+  corrections[getPeriodKey(periods.current.start)],
+);
+
+applyCorrection(
+  stats.previous,
+  corrections[getPeriodKey(periods.previous.start)],
+);
+
 await writeFile(
   "data/stats.json",
   JSON.stringify(stats, null, 2),
