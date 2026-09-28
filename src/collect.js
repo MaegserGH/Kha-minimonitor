@@ -2,6 +2,7 @@ import * as cheerio from "cheerio";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 
 const sources = [
+  // Основні джерела
   ["Ігор Терехов", "ihor_terekhov"],
   ["Олег Синєгубов", "synegubov"],
   ["Харківська ОВА", "kharkivoda"],
@@ -9,6 +10,30 @@ const sources = [
   ["Прокуратура Харків", "prokuratura_kharkiv"],
   ["Поліція Харківщини", "police_kh_region"],
   ["Харківська міськрада", "citykharkivua"],
+
+  // Медіа, які потрібно враховувати
+  ["Суспільне Харків", "suspilne_kharkiv"],
+  ["Об'єктив Харків", "objectivetv"],
+  ["Харків 1654", "kharkiv_1654"],
+  ["Думка медіа", "dumka_media"],
+  ["Накипіло", "nakipelovo"],
+  ["Харківські часи", "khartimes"],
+  ["В городе", "vgorode_kharkiv"],
+
+  // Додаткові місцеві канали
+  ["Балаклія Life", "balakleya_life"],
+  ["Ізюм Live", "izyum_live_news"],
+  ["Слобідський край", "SlobKray"],
+  ["ОТН Харків", "otn_kharkov"],
+  ["ХА Новини", "XA_news"],
+  ["Зоря News", "zorya_news"],
+  ["Дергачі Live", "DerhachiLIVE"],
+
+  // Канали громад
+  ["Борівська громада", "borova_gromada"],
+  ["Куп'янськ", "kupyansk"],
+  ["Липецька громада", "lyptsi_gromada_group"],
+  ["Золочівська громада", "zolochivskaotg"],
 ];
 
 const outputFile = "data/messages.json";
