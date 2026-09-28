@@ -58,7 +58,6 @@ async function collectChannel(source, channel) {
     const text = cleanText(
       $(element)
         .find(".tgme_widget_message_text")
-        .first()
         .text(),
     );
 
