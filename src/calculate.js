@@ -118,7 +118,7 @@ function getStrikeCount(text) {
 function getVictims(text) {
   const values = [];
   const patterns = [
-    /(\d+)\s+(?:людей\s+)?постраждал/igi,
+    /(\d+)\s+(?:людей\s+)?постраждал/gi,
     /постраждал(?:и|их|о)\D{0,20}(\d+)/gi,
     /кількість постраждалих.*?до\s+(\d+)/gi,
   ];
