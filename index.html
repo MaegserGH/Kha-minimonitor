@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8">
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    >
+    <title>Зведена інформація</title>
+
+    <style>
+      body {
+        margin: 0;
+        padding: 24px;
+        color: #172033;
+        background: #f3f5f8;
+        font-family: Arial, sans-serif;
+      }
+
+      main {
+        width: 100%;
+        max-width: 900px;
+        margin: 0 auto;
+      }
+
+      h1 {
+        margin-bottom: 32px;
+        text-align: center;
+      }
+
+      section {
+        margin-bottom: 32px;
+        padding: 24px;
+        background: white;
+        border-radius: 16px;
+      }
+
+      .status {
+        margin-top: 0;
+        color: #556070;
+        font-size: 14px;
+      }
+
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+      }
+
+      .card {
+        padding: 20px 12px;
+        text-align: center;
+        background: #f7f8fa;
+        border-radius: 12px;
+      }
+
+      .value {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 36px;
+        font-weight: bold;
+      }
+
+      .label {
+        color: #556070;
+        font-size: 13px;
+        font-weight: bold;
+      }
+
+      #updated {
+        color: #556070;
+        text-align: center;
+      }
+
+      #error {
+        display: none;
+        padding: 16px;
+        color: #8b1d1d;
+        background: #ffe7e7;
+        border-radius: 12px;
+      }
+
+      @media (max-width: 700px) {
+        body {
+          padding: 12px;
+        }
+
+        section {
+          padding: 16px;
+        }
+
+        .cards {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <main>
+      <h1>ЗВЕДЕНА ІНФОРМАЦІЯ</h1>
+
+      <p id="error">
+        Не вдалося завантажити дані.
+      </p>
+
+      <section>
+        <h2>🟢 ОНЛАЙН</h2>
+
+        <div class="cards">
+          <div class="card">
+            <span class="value" id="current-kharkiv">—</span>
+            <span class="label">УДАРИ ПО ХАРКОВУ</span>
+          </div>
+
+          <div class="card">
+            <span class="value" id="current-region">—</span>
+            <span class="label">УДАРИ ПО ОБЛАСТІ</span>
+          </div>
+
+          <div class="card">
+            <span class="value" id="current-injured">—</span>
+            <span class="label">ПОСТРАЖДАЛІ</span>
+          </div>
+
+          <div class="card">
+            <span class="value" id="current-deaths">—</span>
+            <span class="label">ЗАГИБЛІ</span>
+          </div>
+        </div>
+
+        <p class="status">
+          Оперативні дані. Інформація може уточнюватися.
+        </p>
+      </section>
+
+      <section>
+        <h2>🔒 ПОПЕРЕДНЯ ДОБА</h2>
+
+        <div class="cards">
+          <div class="card">
+            <span class="value" id="previous-kharkiv">—</span>
+            <span class="label">УДАРИ ПО ХАРКОВУ</span>
+          </div>
+
+          <div class="card">
+            <span class="value" id="previous-region">—</span>
+            <span class="label">УДАРИ ПО ОБЛАСТІ</span>
+          </div>
+
+          <div class="card">
+            <span class="value" id="previous-injured">—</span>
+            <span class="label">ПОСТРАЖДАЛІ</span>
+          </div>
+
+          <div class="card">
+            <span class="value" id="previous-deaths">—</span>
+            <span class="label">ЗАГИБЛІ</span>
+          </div>
+        </div>
+
+        <p class="status">
+          Дані попередні та можуть уточнюватися.
+        </p>
+      </section>
+
+      <p id="updated">Завантаження даних…</p>
+    </main>
+
+    <script>
+      function setValue(id, value) {
+        document.getElementById(id).textContent = value;
+      }
+
+      async function loadStats() {
+        try {
+          const response = await fetch(
+            `data/stats.json?time=${Date.now()}`,
+          );
+
+          if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+          }
+
+          const stats = await response.json();
+
+          setValue("current-kharkiv", stats.current.kharkivStrikes);
+          setValue("current-region", stats.current.regionStrikes);
+          setValue("current-injured", stats.current.injured);
+          setValue("current-deaths", stats.current.deaths);
+
+          setValue("previous-kharkiv", stats.previous.kharkivStrikes);
+          setValue("previous-region", stats.previous.regionStrikes);
+          setValue("previous-injured", stats.previous.injured);
+          setValue("previous-deaths", stats.previous.deaths);
+
+          const updatedAt = new Date(stats.updatedAt).toLocaleString(
+            "uk-UA",
+            {
+              timeZone: "Europe/Kyiv",
+              dateStyle: "short",
+              timeStyle: "short",
+            },
+          );
+
+          document.getElementById("updated").textContent =
+            `Оновлено: ${updatedAt}`;
+        } catch (error) {
+          document.getElementById("error").style.display = "block";
+          document.getElementById("updated").textContent =
+            "Дані тимчасово недоступні.";
+        }
+      }
+
+      loadStats();
+    </script>
+  </body>
+</html>
