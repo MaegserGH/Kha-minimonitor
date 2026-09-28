@@ -41,6 +41,7 @@ async function collectChannel(source, channel) {
     const publishedAt = $(element).find("time").attr("datetime");
     const text = $(element)
       .find(".tgme_widget_message_text")
+      .first()
       .text()
       .replace(/\s+/g, " ")
       .trim();
