@@ -66,7 +66,31 @@
         font-size: 13px;
         font-weight: bold;
       }
+      .warning {
+        margin-top: 20px;
+        padding: 14px 16px;
+        color: #6b4b00;
+        background: #fff3cd;
+        border: 1px solid #f0cf70;
+        border-radius: 10px;
+        font-weight: bold;
+      }
 
+      .refresh-button {
+        display: block;
+        margin: 20px auto;
+        padding: 12px 20px;
+        color: white;
+        background: #2457d6;
+        border: 0;
+        border-radius: 10px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      .refresh-button:hover {
+        background: #1945b5;
+      }
       #updated {
         color: #556070;
         text-align: center;
@@ -133,8 +157,8 @@
           </div>
         </div>
 
-        <p class="status">
-          Оперативні дані. Інформація може уточнюватися.
+        <p class="warning">
+          ⚠️ Оперативні дані. Інформація може уточнюватися.
         </p>
       </section>
 
@@ -179,6 +203,14 @@
           Дані попередні та можуть уточнюватися.
         </p>
       </section>
+
+      <button
+        class="refresh-button"
+        type="button"
+        onclick="loadStats()"
+      >
+        Оновити дані
+      </button>
 
       <p id="updated">Завантаження даних…</p>
     </main>
