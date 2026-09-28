@@ -107,6 +107,10 @@
       <section>
         <h2>🟢 ОНЛАЙН</h2>
 
+        <p class="status" id="current-period">
+          Період завантажується…
+        </p>
+
         <div class="cards">
           <div class="card">
             <span class="value" id="current-kharkiv">—</span>
@@ -135,7 +139,19 @@
       </section>
 
       <section>
+        <h2>УРАХОВАНІ УДАРИ ПО ХАРКОВУ</h2>
+
+        <div id="current-events">
+          Завантаження…
+        </div>
+      </section>
+
+      <section>
         <h2>🔒 ПОПЕРЕДНЯ ДОБА</h2>
+
+        <p class="status" id="previous-period">
+          Період завантажується…
+        </p>
 
         <div class="cards">
           <div class="card">
@@ -171,6 +187,57 @@
       function setValue(id, value) {
         document.getElementById(id).textContent = value;
       }
+      function formatDateTime(value) {
+        return new Intl.DateTimeFormat("uk-UA", {
+          timeZone: "Europe/Kyiv",
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        }).format(new Date(value));
+      }
+
+      function formatTime(value) {
+        return new Intl.DateTimeFormat("uk-UA", {
+          timeZone: "Europe/Kyiv",
+          hour: "2-digit",
+          minute: "2-digit",
+        }).format(new Date(value));
+      }
+
+      function showEvents(events) {
+        const container = document.getElementById("current-events");
+        container.textContent = "";
+
+        if (!events || events.length === 0) {
+          container.textContent =
+            "Підтверджених ударів за цей період не знайдено.";
+          return;
+        }
+
+        for (const event of events) {
+          const item = document.createElement("p");
+          const link = document.createElement("a");
+
+          const shortText =
+            event.text.length > 220
+              ? `${event.text.slice(0, 220)}…`
+              : event.text;
+
+          item.append(
+            `${formatTime(event.time)} — ${shortText} `,
+          );
+
+          link.href = event.url;
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
+          link.textContent = `[${event.source}]`;
+
+          item.append(link);
+          container.append(item);
+        }
+      }
 
       async function loadStats() {
         try {
@@ -183,6 +250,18 @@
           }
 
           const stats = await response.json();
+
+          document.getElementById("current-period").textContent =
+            `Дані за період: ${formatDateTime(
+              stats.periods.current.start,
+            )} — ${formatDateTime(stats.periods.current.end)}`;
+
+          document.getElementById("previous-period").textContent =
+            `Період: ${formatDateTime(
+              stats.periods.previous.start,
+            )} — ${formatDateTime(stats.periods.previous.end)}`;
+
+          showEvents(stats.currentKharkivEvents);
 
           setValue("current-kharkiv", stats.current.kharkivStrikes);
           setValue("current-region", stats.current.regionStrikes);
