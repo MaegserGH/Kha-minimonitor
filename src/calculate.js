@@ -6,6 +6,27 @@ const messages = JSON.parse(
   await readFile("data/messages.json", "utf8"),
 );
 
+const additionalSources = new Set([
+  "Суспільне Харків",
+  "Об'єктив Харків",
+  "Харків 1654",
+  "Думка медіа",
+  "Накипіло",
+  "Харківські часи",
+  "В городе",
+  "Балаклія Life",
+  "Ізюм Live",
+  "Слобідський край",
+  "ОТН Харків",
+  "ХА Новини",
+  "Зоря News",
+  "Дергачі Live",
+  "Борівська громада",
+  "Куп'янськ",
+  "Липецька громада",
+  "Золочівська громада",
+]);
+
 const cityDistricts =
   /Салтівськ|Київськ|Шевченківськ|Індустріальн|Слобідськ|Основʼянськ|Основ'янськ|Холодногірськ|Немишлянськ|Новобаварськ/i;
 
@@ -364,6 +385,39 @@ stats.currentKharkivEvents = acceptedEvents
     text: event.text,
     source: event.source,
     url: event.url,
+  }));
+
+stats.additionalEvents = messages
+  .filter((message) => {
+    if (!additionalSources.has(message.source)) {
+      return false;
+    }
+
+    if (
+      !attackWords.test(message.text) ||
+      historicalWords.test(message.text)
+    ) {
+      return false;
+    }
+
+    const publishedAt = new Date(message.publishedAt);
+
+    return (
+      publishedAt >= periods.current.start &&
+      publishedAt < periods.current.end
+    );
+  })
+  .sort(
+    (first, second) =>
+      new Date(second.publishedAt) -
+      new Date(first.publishedAt),
+  )
+  .slice(0, 20)
+  .map((message) => ({
+    publishedAt: message.publishedAt,
+    text: message.text,
+    source: message.source,
+    url: message.url,
   }));
 
 await writeFile(
