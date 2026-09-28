@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "collect": "node src/collect.js"
+    "collect": "node src/collect.js && node src/calculate.js"
   },
   "dependencies": {
     "cheerio": "^1.1.2"
