@@ -22,7 +22,7 @@ function getPeriods() {
   const now = new Date();
   const currentStart = new Date(now);
 
-  currentStart.setHours(7, 0, 0, 0);
+  currentStart.setHours(8, 0, 0, 0);
 
   if (now < currentStart) {
     currentStart.setDate(currentStart.getDate() - 1);
