@@ -21,6 +21,22 @@ async function readExistingMessages() {
   }
 }
 
+function cleanText(value) {
+  const text = value.replace(/\s+/g, " ").trim();
+
+  if (text.length % 2 === 0) {
+    const middle = text.length / 2;
+    const firstHalf = text.slice(0, middle);
+    const secondHalf = text.slice(middle);
+
+    if (firstHalf === secondHalf) {
+      return firstHalf;
+    }
+  }
+
+  return text;
+}
+
 async function collectChannel(source, channel) {
   const response = await fetch(`https://t.me/s/${channel}`, {
     headers: {
@@ -39,12 +55,12 @@ async function collectChannel(source, channel) {
   $(".tgme_widget_message").each((_, element) => {
     const id = $(element).attr("data-post");
     const publishedAt = $(element).find("time").attr("datetime");
-    const text = $(element)
-      .find(".tgme_widget_message_text")
-      .first()
-      .text()
-      .replace(/\s+/g, " ")
-      .trim();
+    const text = cleanText(
+      $(element)
+        .find(".tgme_widget_message_text")
+        .first()
+        .text(),
+    );
 
     if (!id || !publishedAt || !text) return;
 
