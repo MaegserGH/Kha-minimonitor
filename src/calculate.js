@@ -161,6 +161,48 @@ function emptyPeriod() {
   };
 }
 
+async function readCorrections() {
+  try {
+    return JSON.parse(
+      await readFile("data/corrections.json", "utf8"),
+    );
+  } catch {
+    return {};
+  }
+}
+
+function getPeriodKey(date) {
+  const parts = new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Europe/Kyiv",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(date);
+
+  const values = Object.fromEntries(
+    parts.map((part) => [part.type, part.value]),
+  );
+
+  return `${values.year}-${values.month}-${values.day}`;
+}
+
+function applyCorrection(statsPeriod, correction) {
+  if (!correction) {
+    return;
+  }
+
+  for (const key of [
+    "kharkivStrikes",
+    "regionStrikes",
+    "injured",
+    "deaths",
+  ]) {
+    if (Number.isInteger(correction[key]) && correction[key] >= 0) {
+      statsPeriod[key] = correction[key];
+    }
+  }
+}
+
 const periods = getPeriods();
 const stats = {
   updatedAt: periods.now.toISOString(),
