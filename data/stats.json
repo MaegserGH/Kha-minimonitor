@@ -1,0 +1,15 @@
+{
+  "updatedAt": "2026-09-28T20:26:15.059Z",
+  "current": {
+    "kharkivStrikes": 2,
+    "regionStrikes": 2,
+    "injured": 57,
+    "deaths": 0
+  },
+  "previous": {
+    "kharkivStrikes": 2,
+    "regionStrikes": 0,
+    "injured": 25,
+    "deaths": 0
+  }
+}
