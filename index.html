@@ -91,6 +91,11 @@
       .refresh-button:hover {
         background: #1945b5;
       }
+
+      .action-link {
+        width: fit-content;
+        text-decoration: none;
+      }
       #updated {
         color: #556070;
         text-align: center;
@@ -204,12 +209,21 @@
         </p>
       </section>
 
+      <a
+        class="refresh-button action-link"
+        href="https://github.com/MaegserGH/Kha-minimonitor/actions/workflows/update.yml"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Запустити збір даних
+      </a>
+
       <button
         class="refresh-button"
         type="button"
         onclick="loadStats()"
       >
-        Оновити дані
+        Оновити показники
       </button>
 
       <p id="updated">Завантаження даних…</p>
