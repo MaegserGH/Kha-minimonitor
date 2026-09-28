@@ -176,7 +176,20 @@
           Завантаження…
         </div>
       </section>
+      
+      <section>
+        <h2>ДОДАТКОВІ ПОВІДОМЛЕННЯ</h2>
 
+        <p class="status">
+          Можливі події з додаткових каналів. Вони не змінюють
+          показники автоматично.
+        </p>
+
+        <div id="additional-events">
+          Завантаження…
+        </div>
+      </section>
+      
       <section>
         <h2>🔒 ПОПЕРЕДНЯ ДОБА</h2>
 
@@ -287,6 +300,43 @@
         }
       }
 
+      function showAdditionalEvents(events) {
+        const container = document.getElementById(
+          "additional-events",
+        );
+
+        container.textContent = "";
+
+        if (!events || events.length === 0) {
+          container.textContent =
+            "Нових повідомлень про можливі події не знайдено.";
+          return;
+        }
+
+        for (const event of events) {
+          const item = document.createElement("p");
+          const link = document.createElement("a");
+
+          const shortText =
+            event.text.length > 220
+              ? `${event.text.slice(0, 220)}…`
+              : event.text;
+
+          item.append(
+            `${formatTime(event.publishedAt)} — ${shortText} `,
+          );
+
+          link.href = event.url;
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
+          link.textContent = `[${event.source}]`;
+
+          item.append(link);
+          container.append(item);
+        }
+      }
+
+      
       async function loadStats() {
         try {
           const response = await fetch(
@@ -310,6 +360,7 @@
             )} — ${formatDateTime(stats.periods.previous.end)}`;
 
           showEvents(stats.currentKharkivEvents);
+          showAdditionalEvents(stats.additionalEvents);
 
           setValue("current-kharkiv", stats.current.kharkivStrikes);
           setValue("current-region", stats.current.regionStrikes);
