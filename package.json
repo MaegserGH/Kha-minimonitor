@@ -1,0 +1,12 @@
+{
+  "name": "kha-minimonitor",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "collect": "node src/collect.js"
+  },
+  "dependencies": {
+    "cheerio": "^1.1.2"
+  }
+}
