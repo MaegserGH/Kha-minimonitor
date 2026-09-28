@@ -282,6 +282,9 @@ for (const message of messages) {
       scope,
       time: eventTime,
       count: getStrikeCount(text),
+      text: message.text,
+      source: message.source,
+      url: message.url,
     });
   }
 }
@@ -337,6 +340,31 @@ applyCorrection(
   stats.previous,
   corrections[getPeriodKey(periods.previous.start)],
 );
+
+stats.periods = {
+  current: {
+    start: periods.current.start.toISOString(),
+    end: periods.current.end.toISOString(),
+  },
+  previous: {
+    start: periods.previous.start.toISOString(),
+    end: periods.previous.end.toISOString(),
+  },
+};
+
+stats.currentKharkivEvents = acceptedEvents
+  .filter(
+    (event) =>
+      event.periodName === "current" &&
+      event.scope === "city",
+  )
+  .map((event) => ({
+    time: event.time.toISOString(),
+    count: event.count,
+    text: event.text,
+    source: event.source,
+    url: event.url,
+  }));
 
 await writeFile(
   "data/stats.json",
