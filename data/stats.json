@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-24T23:12:59.417Z",
+  "updatedAt": "2026-10-25T01:09:42.030Z",
   "current": {
     "kharkivStrikes": 2,
     "regionStrikes": 1,
@@ -15,7 +15,7 @@
   "periods": {
     "current": {
       "start": "2026-10-24T05:00:00.000Z",
-      "end": "2026-10-24T23:12:59.417Z"
+      "end": "2026-10-25T01:09:42.030Z"
     },
     "previous": {
       "start": "2026-10-23T05:00:00.000Z",
